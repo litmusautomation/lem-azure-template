@@ -17,7 +17,7 @@
             }
         },
         "sshKey": {
-            "type": "securestring",
+            "type": "string",
             "defaultValue": "",
             "metadata": {
                 "description": "SSH Key for the Virtual Machine."
@@ -230,7 +230,7 @@
                         "properties": {
                             "protocol": "TCP",
                             "sourcePortRange": "*",
-                            "destinationPortRange": "8884",
+                            "destinationPortRange": "8444",
                             "sourceAddressPrefix": "*",
                             "destinationAddressPrefix": "*",
                             "access": "Allow",
