@@ -52,6 +52,13 @@
                 "description": "The size of the VM"
             }
         },
+        "diskSize": {
+            "type": "string",
+            "defaultValue": "80",
+            "metadata": {
+                "description": "Disk size, GB"
+            }
+        },
         "virtualNetworkName": {
             "type": "string",
             "defaultValue": "vNet",
@@ -104,6 +111,11 @@
                 "[resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
                 "[resourceId('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]"
             ],
+            "plan": {
+                "name": "lem-azure",
+                "product": "litmusedgemanager-preview",
+                "publisher": "litmusautomation1582760223280"
+            },
             "properties": {
                 "ipConfigurations": [
                     {
@@ -431,7 +443,8 @@
                         "createOption": "fromImage",
                         "managedDisk": {
                             "storageAccountType": "[variables('osDiskType')]"
-                        }
+                        },
+                        "diskSizeGB": "[parameters('diskSize')]"
                     },
                     "imageReference": {
                         "publisher": "litmusautomation1582760223280",
