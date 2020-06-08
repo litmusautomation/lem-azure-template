@@ -111,11 +111,6 @@
                 "[resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
                 "[resourceId('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]"
             ],
-            "plan": {
-                "name": "lem-azure",
-                "product": "litmusedgemanager-preview",
-                "publisher": "litmusautomation1582760223280"
-            },
             "properties": {
                 "ipConfigurations": [
                     {
@@ -430,6 +425,11 @@
             "apiVersion": "2019-03-01",
             "name": "[parameters('vmName')]",
             "location": "[parameters('location')]",
+            "plan": {
+                "name": "lem-azure",
+                "product": "litmusedgemanager-preview",
+                "publisher": "litmusautomation1582760223280"
+            },
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkInterfaces/', variables('networkInterfaceName'))]"
             ],
