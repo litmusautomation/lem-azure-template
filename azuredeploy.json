@@ -9,6 +9,20 @@
                 "description": "The name of you Virtual Machine."
             }
         },
+        "sshUsername": {
+            "type": "string",
+            "defaultValue": "lem_setup",
+            "metadata": {
+                "description": "SSH username for the Virtual Machine."
+            }
+        },
+        "sshKey": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "SSH Key for the Virtual Machine."
+            }
+        },
         "dnsLabelPrefix": {
             "type": "string",
             "defaultValue": "[toLower(concat('lemvm-', uniqueString(resourceGroup().id)))]",
@@ -77,7 +91,15 @@
         "subnetAddressPrefix": "10.1.0.0/24",
         "addressPrefix": "10.1.0.0/16",
         "linuxConfiguration": {
-            "disablePasswordAuthentication": true
+            "disablePasswordAuthentication": true,
+            "ssh": {
+                "publicKeys": [
+                    {
+                        "path": "[concat('/home/', parameters('sshUsername'), '/.ssh/authorized_keys')]",
+                        "keyData": "[parameters('sshKey')]"
+                    }
+                ]
+            }
         }
     },
     "resources": [
@@ -442,7 +464,7 @@
                 },
                 "osProfile": {
                     "computerName": "[parameters('vmName')]",
-                    "adminUsername": "lem",
+                    "adminUsername": "[parameters('sshUsername')]",
                     "customData": "[base64(concat('#cloud-config\n\nruncmd:\n- sed -i ''s/LEM_BASE_DOMAIN_NAME=.*/LEM_BASE_DOMAIN_NAME=', reference(variables('publicIPAddressName')).dnsSettings.fqdn, '/'' /etc/default/lem-common',' && sed -i ''s/LEM_MINIO_DOMAIN_NAME=.*/LEM_MINIO_DOMAIN_NAME=', reference(variables('publicIPAddressName')).dnsSettings.fqdn, '/'' /etc/default/lem-common', ' && sed -i ''s/LEM_INSIGHTS_DOMAIN_NAME=.*/LEM_INSIGHTS_DOMAIN_NAME=', reference(variables('publicIPAddressName')).dnsSettings.fqdn, '/'' /etc/default/lem-common && dpkg-reconfigure lem-ui-generic && dpkg-reconfigure lem-admin-ui-generic && dpkg-reconfigure lem-mpc-ui-generic\n'))]",
                     "linuxConfiguration": "[variables('linuxConfiguration')]"
                 }
@@ -474,9 +496,17 @@
             "type": "string",
             "value": "demo"
         },
+        "sshUsername": {
+            "type": "string",
+            "value": "[parameters('sshUsername')]"
+        },
         "hostname": {
             "type": "string",
             "value": "[reference(variables('publicIPAddressName')).dnsSettings.fqdn]"
+        },
+        "sshCommand": {
+            "type": "string",
+            "value": "[concat('ssh ', parameters('sshUsername'), '@', reference(variables('publicIPAddressName')).dnsSettings.fqdn)]"
         }
     }
 }
