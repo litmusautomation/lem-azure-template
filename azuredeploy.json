@@ -442,6 +442,7 @@
                 },
                 "osProfile": {
                     "computerName": "[parameters('vmName')]",
+                    "adminUsername": "lem",
                     "customData": "[base64(concat('#cloud-config\n\nruncmd:\n- sed -i ''s/LEM_BASE_DOMAIN_NAME=.*/LEM_BASE_DOMAIN_NAME=', reference(variables('publicIPAddressName')).dnsSettings.fqdn, '/'' /etc/default/lem-common',' && sed -i ''s/LEM_MINIO_DOMAIN_NAME=.*/LEM_MINIO_DOMAIN_NAME=', reference(variables('publicIPAddressName')).dnsSettings.fqdn, '/'' /etc/default/lem-common', ' && sed -i ''s/LEM_INSIGHTS_DOMAIN_NAME=.*/LEM_INSIGHTS_DOMAIN_NAME=', reference(variables('publicIPAddressName')).dnsSettings.fqdn, '/'' /etc/default/lem-common && dpkg-reconfigure lem-ui-generic && dpkg-reconfigure lem-admin-ui-generic && dpkg-reconfigure lem-mpc-ui-generic\n'))]",
                     "linuxConfiguration": "[variables('linuxConfiguration')]"
                 }
