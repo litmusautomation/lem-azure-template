@@ -32,9 +32,10 @@
         },
         "LemVersion": {
             "type": "string",
-            "defaultValue": "1.9.1",
+            "defaultValue": "1.9.2",
             "allowedValues": [
-                "1.9.1"
+                "1.9.1",
+                "1.9.2
             ],
             "metadata": {
                 "description": "The Litmus Edge Manager version for the VM."
